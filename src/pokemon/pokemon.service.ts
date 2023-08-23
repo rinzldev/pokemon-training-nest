@@ -5,6 +5,7 @@ import { Pokemon } from './entities/pokemon.entity';
 
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 
 @Injectable()
@@ -30,8 +31,16 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return `This action returns all pokemon`;
+  findAll(paginationDto:PaginationDto) {
+    
+    const {limit = 10, offset = 0} = paginationDto
+    return this.pokemonModel.find()
+      .limit(limit)
+      .skip(offset)
+      .sort({
+        nro: 1
+      })
+
   }
 
   async findOne(term: string) {
@@ -93,5 +102,9 @@ export class PokemonService {
     throw new InternalServerErrorException(`Can't create pokemon - Check server logs`)
   }
 
+}
+
+function limit(arg0: number) {
+  throw new Error('Function not implemented.');
 }
 
